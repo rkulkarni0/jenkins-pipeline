@@ -50,5 +50,10 @@ pipeline {
                 echo 'Deploying the application to a production server'
             }
         }
+        stage('Deploy to Completion') {
+            steps {
+                echo 'Completing this stage and testing the commit triggers.'
+            }
+        }
     }
 }
