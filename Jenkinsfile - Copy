@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the code using Maven'
+            }
+        }
+        stage('Unit and Integration Tests') {
+            steps {
+                echo 'Running unit and integration tests using JUnit'
+            }
+            post {
+                always {
+                    mail to: 'askrujutak@gmail.com',
+                         subject: "Unit and Integration Tests ${currentBuild.fullDisplayName} finished",
+                         body: "The Unit and Integration Tests stage finished with result: ${currentBuild.result}"
+                }
+            }
+        }
+        stage('Code Analysis') {
+            steps {
+                echo 'Analysing the code using SonarQube'
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                echo 'Performing security scan using OWASP Dependency-Check'
+            }
+            post {
+                always {
+                    mail to: 'askrujutak@gmail.com',
+                         subject: "Security Scan ${currentBuild.fullDisplayName} finished",
+                         body: "The Security Scan stage finished with result: ${currentBuild.result}"
+                }
+            }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                echo 'Deploying the application to a staging server'
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running integration tests on the staging environment'
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploying the application to a production server'
+            }
+        }
+    }
+}
